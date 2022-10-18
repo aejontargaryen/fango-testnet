@@ -1,20 +1,19 @@
-// Copyright (c) 2019-2021 Fango Developers
-// Copyright (c) 2018-2021 Fandom Gold Society
+// Copyright (c) 2017-2022 Fuego Developers
 // Copyright (c) 2018-2019 Conceal Network & Conceal Devs
 // Copyright (c) 2016-2019 The Karbowanec developers
 // Copyright (c) 2012-2018 The CryptoNote developers
 //
-// This file is part of Fango.
+// This file is part of Fuego.
 //
-// Fango is free software distributed in the hope that it
+// Fuego is free software distributed in the hope that it
 // will be useful, but WITHOUT ANY WARRANTY; without even the
 // implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 // PURPOSE. You can redistribute it and/or modify it under the terms
 // of the GNU General Public License v3 or later versions as published
-// by the Free Software Foundation. Fango includes elements written 
+// by the Free Software Foundation. Fuego includes elements written
 // by third parties. See file labeled LICENSE for more details.
 // You should have received a copy of the GNU General Public License
-// along with Fango. If not, see <https://www.gnu.org/licenses/>.
+// along with Fuego. If not, see <https://www.gnu.org/licenses/>.
 
 #include "Currency.h"
 #include <cctype>
@@ -84,6 +83,8 @@ namespace CryptoNote
 			m_upgradeHeightV6 = 6;	
 			m_upgradeHeightV7 = 7;	
 			m_upgradeHeightV8 = 8;
+			m_upgradeHeightV9 = 9;
+
       m_blocksFileName = "testnet_" + m_blocksFileName;
       m_blocksCacheFileName = "testnet_" + m_blocksCacheFileName;
       m_blockIndexesFileName = "testnet_" + m_blockIndexesFileName;
@@ -160,6 +161,9 @@ namespace CryptoNote
 		}
 		else if (majorVersion == BLOCK_MAJOR_VERSION_8) {
 			return m_upgradeHeightV8;
+		}
+		else if (majorVersion == BLOCK_MAJOR_VERSION_9) {
+			return m_upgradeHeightV9;
 		}
 		else {
 			return static_cast<uint32_t>(-1);
@@ -241,6 +245,7 @@ namespace CryptoNote
       interestLo = cLo;
     }
     return offchaininterest;
+
   }
 
   /* ---------------------------------------------------------------------------------------------------- */
@@ -384,6 +389,7 @@ namespace CryptoNote
   }
 
   /* ---------------------------------------------------------------------------------------------------- */
+
 
   uint64_t Currency::getTransactionInputAmount(const TransactionInput &in, uint32_t height) const
   {
@@ -974,6 +980,7 @@ namespace CryptoNote
 		next_difficulty = static_cast<uint64_t>(nextDifficulty);
 		
 		// minimum limit
+
 		//if (!isTestnet() && next_difficulty < 10000) { //REMOVED THROUGH TESTNET
 		//	next_difficulty = 10000;
 		//} 
@@ -995,6 +1002,7 @@ namespace CryptoNote
 			   uint64_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3; // N=60, 90, and 120 for T=600, 120, 60.
 			   uint64_t  L(0), next_D, i, this_timestamp(0), previous_timestamp(0), avg_D;
 			   uint32_t Dracarys = CryptoNote::parameters::UPGRADE_HEIGHT_V4;
+
 	   		   //uint64_t difficulty_plate = 10000;
 	   		     uint64_t difficulty_plate = 777; //TESTNET
 
@@ -1034,7 +1042,7 @@ namespace CryptoNote
 			     else { i /= 10; }
 			   }
 			   // Make least 2 digits = size of hash rate change last 11 blocks if it's statistically significant.
-			   // D=2540035 => hash rate 3.5x higher than D expectde. Blocks coming 3.5x too fast.
+			   // D=2540035 => hash rate 3.5x higher than D expected. Blocks coming 3.5x too fast.
 			   if ( next_D > 10000 ) { 
 			     uint64_t est_HR = (10*(11*T+(timestamps[N]-timestamps[N-11])/2))/(timestamps[N]-timestamps[N-11]+1);
 			     if (  est_HR > 5 && est_HR < 22 )  {  est_HR=0;   }
@@ -1042,6 +1050,7 @@ namespace CryptoNote
 			     next_D = ((next_D+50)/100)*100 + est_HR;  
 			   }
 	         	   // mini-lim
+
 	   		   //if (!isTestnet() && next_D < 10000) {
 	  		   //	next_D = 10000;
 			   if (!isTestnet() && next_D < 100) {  //TESTNET
@@ -1062,6 +1071,7 @@ namespace CryptoNote
 			   const uint64_t T = CryptoNote::parameters::DIFFICULTY_TARGET;
 			   uint64_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V4; // N=60, 90, and 120 for T=600, 120, 60.
 			   uint64_t  L(0), next_D, i, this_timestamp(0), previous_timestamp(0), avg_D;
+
 			   //uint32_t FanG = CryptoNote::parameters::UPGRADE_HEIGHT_V7;
 	   		   //uint64_t difficulty_plate = 100000;
 	   		   uint32_t Fangold = CryptoNote::parameters::UPGRADE_HEIGHT_V7; //TESTNET
@@ -1077,6 +1087,7 @@ namespace CryptoNote
 			   // This will also cover up a very common type of backwards-incompatible fork.
 			   // difficulty_guess = 10000; //  Dev may change.  Guess lower than anything expected.
 			  
+
 	  		   //if ( height <= FanG + 1 + N ) { return difficulty_plate;  }
  			   if ( height <= Fangold + 1 + N ) { return difficulty_plate; } //TESTNET
 
@@ -1104,7 +1115,7 @@ namespace CryptoNote
 			     else { i /= 10; }
 			   }
 			   // Make least 2 digits = size of hash rate change last 11 blocks if it's statistically significant.
-			   // D=2540035 => hash rate 3.5x higher than D expectde. Blocks coming 3.5x too fast.
+			   // D=2540035 => hash rate 3.5x higher than D expected. Blocks coming 3.5x too fast.
 			   if ( next_D > 10000 ) { 
 			     uint64_t est_HR = (10*(11*T+(timestamps[N]-timestamps[N-11])/2))/(timestamps[N]-timestamps[N-11]+1);
 			     if (  est_HR > 5 && est_HR < 22 )  {  est_HR=0;   }
@@ -1112,6 +1123,7 @@ namespace CryptoNote
 			     next_D = ((next_D+50)/100)*100 + est_HR;  
 			   }
 	         	   // mini-lim
+
 	   		   //if (!isTestnet() && next_D < 10000) {
 	  		   //	next_D = 10000;
 			   if (!isTestnet() && next_D < 100) {  //TESTNET
@@ -1188,6 +1200,8 @@ namespace CryptoNote
 		case BLOCK_MAJOR_VERSION_6:
 		case BLOCK_MAJOR_VERSION_7:
 		case BLOCK_MAJOR_VERSION_8:
+		case BLOCK_MAJOR_VERSION_9:
+
 
 			return checkProofOfWorkV2(context, block, currentDiffic, proofOfWork);
 		}
@@ -1237,6 +1251,8 @@ namespace CryptoNote
 		moneySupply(parameters::MONEY_SUPPLY);
 		emissionSpeedFactor(parameters::EMISSION_SPEED_FACTOR);
 		emissionSpeedFactor_FANGO(parameters::EMISSION_SPEED_FACTOR_FANGO);
+                emissionSpeedFactor_FUEGO(parameters::EMISSION_SPEED_FACTOR_FUEGO);
+
 
 		cryptonoteCoinVersion(parameters::CRYPTONOTE_COIN_VERSION);
 
@@ -1284,6 +1300,8 @@ namespace CryptoNote
     upgradeHeightV6(parameters::UPGRADE_HEIGHT_V6);
     upgradeHeightV7(parameters::UPGRADE_HEIGHT_V7);
     upgradeHeightV8(parameters::UPGRADE_HEIGHT_V8);
+    upgradeHeightV8(parameters::UPGRADE_HEIGHT_V9);
+
     upgradeVotingThreshold(parameters::UPGRADE_VOTING_THRESHOLD);
     upgradeVotingWindow(parameters::UPGRADE_VOTING_WINDOW);
     upgradeWindow(parameters::UPGRADE_WINDOW);
@@ -1324,6 +1342,14 @@ namespace CryptoNote
 		m_currency.m_emissionSpeedFactor_FANGO = val;
 		return *this;
 	}
+        CurrencyBuilder& CurrencyBuilder::emissionSpeedFactor_FUEGO(unsigned int val) {
+                if (val <= 0 || val > 8 * sizeof(uint64_t)) {
+                        throw std::invalid_argument("val at emissionSpeedFactor_FUEGO()");
+                }
+
+                m_currency.m_emissionSpeedFactor_FUEGO = val;
+                return *this;
+        }
 
 	CurrencyBuilder& CurrencyBuilder::numberOfDecimalPlaces(size_t val) {
 		m_currency.m_numberOfDecimalPlaces = val;

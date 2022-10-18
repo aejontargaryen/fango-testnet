@@ -1,5 +1,4 @@
-// Copyright (c) 2019-2021 Fango Developers
-// Copyright (c) 2018-2021 Fandom Gold Society
+// Copyright (c) 2017-2022 Fuego Developers
 // Copyright (c) 2018-2019 Conceal Network & Conceal Devs
 // Copyright (c) 2014-2018 The Monero project
 // Copyright (c) 2014-2018 The Forknote developers
@@ -7,17 +6,17 @@
 // Copyright (c) 2012-2018 The CryptoNote developers
 // Copyright (c) 2018-2019 The Ryo Currency developers
 //
-// This file is part of Fango.
+// This file is part of Fuego.
 //
-// Fango is free software distributed in the hope that it
+// Fuego is free software distributed in the hope that it
 // will be useful, but WITHOUT ANY WARRANTY; without even the
 // implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 // PURPOSE. You can redistribute it and/or modify it under the terms
 // of the GNU General Public License v3 or later versions as published
-// by the Free Software Foundation. Fango includes elements written 
+// by the Free Software Foundation. Fuego includes elements written
 // by third parties. See file labeled LICENSE for more details.
 // You should have received a copy of the GNU General Public License
-// along with Fango. If not, see <https://www.gnu.org/licenses/>.
+// along with Fuego. If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
@@ -36,7 +35,8 @@ namespace CryptoNote
 		const size_t CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW = 60;	
 		const uint64_t DIFFICULTY_TARGET_DRGL = 81;
 		const unsigned EMISSION_SPEED_FACTOR = 18;
-		const unsigned EMISSION_SPEED_FACTOR_FANGO = 19;
+                const unsigned EMISSION_SPEED_FACTOR_FANGO = 19;  //major version 8
+                const unsigned EMISSION_SPEED_FACTOR_FUEGO = 20;   //major version 9
 		const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT  = 60 * 60 * 2;
 		const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V1 = DIFFICULTY_TARGET_DRGL * 6;
 		const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V2 = DIFFICULTY_TARGET * 2;
@@ -71,12 +71,15 @@ namespace CryptoNote
 		const size_t   DIFFICULTY_WINDOW_V4                          = 45;  // blocks  Zawy-LWMA1 Fango
 
 		const uint64_t MIN_TX_MIXIN_SIZE                             = 2;
+               // const uint64_t MIN_TX_MIXIN_SIZE_V9                          = 8;
 		const uint64_t MAX_TX_MIXIN_SIZE                             = 18;
 		static_assert(2 * DIFFICULTY_CUT <= DIFFICULTY_WINDOW - 2, "Bad DIFFICULTY_WINDOW or DIFFICULTY_CUT");
+
 
 		const uint64_t DEPOSIT_MIN_AMOUNT = 8 * COIN;
 		const uint32_t DEPOSIT_MIN_TERM = 2;  //test term 		 /* one month=5480 ( 3 months (16440) for release ) OverviewFrame::depositParamsChanged */ 
 		const uint32_t DEPOSIT_MAX_TERM = 1 * 12 * 80;  		 /* one year | use 3 month min/max */
+
 
 		static_assert(DEPOSIT_MIN_TERM > 0, "Bad DEPOSIT_MIN_TERM");
 		static_assert(DEPOSIT_MIN_TERM <= DEPOSIT_MAX_TERM, "Bad DEPOSIT_MAX_TERM");
@@ -113,6 +116,8 @@ namespace CryptoNote
 		const uint32_t UPGRADE_HEIGHT_V6                             = 6; //{Ice&fire}  CN8  (variant2)
 		const uint32_t UPGRADE_HEIGHT_V7                             = 7; //Fandomgold
 		const uint32_t UPGRADE_HEIGHT_V8                             = 5439; //Dragonbourne (emission|deposits)
+		const uint32_t UPGRADE_HEIGHT_V9                             = 45800; //Godflame (emission|UPX2)
+
 		const unsigned UPGRADE_VOTING_THRESHOLD = 90; // percent
 		const size_t UPGRADE_VOTING_WINDOW = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;
 		const size_t UPGRADE_WINDOW = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;
@@ -143,6 +148,7 @@ namespace CryptoNote
 	const uint8_t  BLOCK_MAJOR_VERSION_6                         =  6;
 	const uint8_t  BLOCK_MAJOR_VERSION_7                         =  7;
 	const uint8_t  BLOCK_MAJOR_VERSION_8                         =  8; 
+	const uint8_t  BLOCK_MAJOR_VERSION_9                         =  9;
 	const uint8_t  BLOCK_MINOR_VERSION_0 			     =  0;
 	const uint8_t  BLOCK_MINOR_VERSION_1 			     =  1;
 
@@ -184,6 +190,7 @@ namespace CryptoNote
 
 	// Seed Nodes
 	const std::initializer_list<const char *> SEED_NODES = {
+
 		"104.236.0.16:28282",
 		"188.226.177.187:28282",
 		"fango.money:28282",
@@ -202,6 +209,7 @@ namespace CryptoNote
 	// Blockchain Checkpoints:
 	// {<block height>, "<block hash>"},
 	const std::initializer_list<CheckpointData>
+
 		CHECKPOINTS = {	};
 
 } // namespace CryptoNote
